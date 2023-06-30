@@ -2,7 +2,7 @@
 using LevelSystem;
 using UnityEngine;
 
-namespace _Source.NPCSystem
+namespace NPCSystem
 {
     public class Movement
     {
@@ -18,6 +18,7 @@ namespace _Source.NPCSystem
             }
         }
         
+        // Split Implementation
         public List<Transform> FindPath(MovementPoints start, MovementPoints end)
         {
             List<MovementPoints> movementPointsList = new List<MovementPoints>();

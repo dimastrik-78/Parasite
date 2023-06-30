@@ -7,35 +7,44 @@ namespace ParasiteSystem
     public class Parasite : MonoBehaviour
     {
         [SerializeField] private int restoringMovementTime;
-        [SerializeField] private LayerMask human;
+        [SerializeField] private LayerMask humanMask;
 
         private bool _canTransition = true;
 
         private const float WAIT = 1f;
 
-        void Update()
+        private void Update()
         {
-            RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, 2f, Vector2.up, 0, human);
+            RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, 3f, Vector2.up, 0, humanMask);
             
             if (hit.Length > 0
                 && Input.GetMouseButtonDown(0)
                 && _canTransition)
             {
-                var human = transform.parent.GetComponent<Human>();
-                transform.parent = null;
-                
-                human.ChangeState();
-                
-                transform.parent = hit[0].transform;
-
-                transform.parent.GetComponent<Human>().ChangeState();
-                transform.localPosition = Vector3.zero;
-                StartCoroutine(RestoringMovement());
+                Transition(hit);
             }
+        }
+
+        // Change implementation
+        private void Transition(RaycastHit2D[] hit)
+        {
+            Transform parent = transform.parent;
+            Human human = parent.GetComponent<Human>();
+            parent = null;
+                
+            human.ChangeState();
+                
+            parent = hit[0].transform;
+            transform.parent = parent;
+
+            parent.GetComponent<Human>().ChangeState();
+            transform.localPosition = Vector3.zero;
+            StartCoroutine(RestoringMovement());
         }
 
         private IEnumerator RestoringMovement()
         {
+            Debug.Log("cant");
             _canTransition = false;
             
             int time = restoringMovementTime;
@@ -46,6 +55,7 @@ namespace ParasiteSystem
             }
 
             _canTransition = true;
+            Debug.Log("can");
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Core
 
         private readonly Random _random = new();
         
-        void Awake()
+        private void Start()
         {
             int index = _random.Next(0, humans.Length);
             Instantiate(parasitePrefab, humans[index].transform);

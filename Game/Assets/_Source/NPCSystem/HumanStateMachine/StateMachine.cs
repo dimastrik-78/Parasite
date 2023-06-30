@@ -5,7 +5,7 @@ namespace NPCSystem.HumanStateMachine
 {
     public class StateMachine
     {
-        protected internal AHumanState CurrentPlayerState;
+        private AHumanState _currentPlayerState;
         
         private readonly Dictionary<HumanState, AHumanState> _states;
         
@@ -24,17 +24,17 @@ namespace NPCSystem.HumanStateMachine
 
         public HumanState State()
         {
-            return CurrentPlayerState.State();
+            return _currentPlayerState.State();
         }
 
         public void Request()
         {
-            CurrentPlayerState.Request();
+            _currentPlayerState.Request();
         }
         
         public void ChangeState(HumanState state)
         {
-            CurrentPlayerState = _states[state];
+            _currentPlayerState = _states[state];
         }
     }
 }

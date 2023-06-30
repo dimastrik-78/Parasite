@@ -6,7 +6,7 @@ namespace LevelSystem.PlaceStrategy
     {
         public void Action()
         {
-            Debug.Log("die");
+            Debug.Log("Lose");
         }
     }
 }

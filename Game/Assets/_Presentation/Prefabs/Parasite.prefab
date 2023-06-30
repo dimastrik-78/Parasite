@@ -98,6 +98,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   restoringMovementTime: 5
-  human:
+  humanMask:
     serializedVersion: 2
     m_Bits: 64

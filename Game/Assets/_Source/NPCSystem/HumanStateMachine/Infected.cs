@@ -4,7 +4,7 @@ namespace NPCSystem.HumanStateMachine
 {
     public class Infected : AHumanState
     {
-        private GameObject _human;
+        private readonly GameObject _human;
         
         public Infected(StateMachine owner, GameObject human) : base(owner)
         {

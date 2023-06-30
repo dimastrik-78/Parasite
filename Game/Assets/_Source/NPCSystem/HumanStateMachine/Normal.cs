@@ -5,7 +5,7 @@ namespace NPCSystem.HumanStateMachine
     public class Normal : AHumanState
     {
         private readonly StateMachine _owner;
-        private GameObject _human;
+        private readonly GameObject _human;
         
         public Normal(StateMachine owner, GameObject human) : base(owner)
         {
