@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using _Source.LevelSystem;
+using LevelSystem;
 using UnityEngine;
 
 namespace _Source.NPCSystem

@@ -1,4 +1,5 @@
 using System.Collections;
+using NPCSystem;
 using UnityEngine;
 
 namespace ParasiteSystem
@@ -20,9 +21,14 @@ namespace ParasiteSystem
                 && Input.GetMouseButtonDown(0)
                 && _canTransition)
             {
-                transform.parent.gameObject.SetActive(false);
+                var human = transform.parent.GetComponent<Human>();
+                transform.parent = null;
+                
+                human.ChangeState();
+                
                 transform.parent = hit[0].transform;
-                transform.parent.gameObject.layer = 7;
+
+                transform.parent.GetComponent<Human>().ChangeState();
                 transform.localPosition = Vector3.zero;
                 StartCoroutine(RestoringMovement());
             }

@@ -1,4 +1,4 @@
-using _Source.NPCSystem;
+using NPCSystem;
 using UnityEngine;
 using Random = System.Random;
 
@@ -16,6 +16,7 @@ namespace Core
             int index = _random.Next(0, humans.Length);
             Instantiate(parasitePrefab, humans[index].transform);
             humans[index].gameObject.layer = 7;
+            humans[index].ChangeState();
         }
     }
 }

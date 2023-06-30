@@ -1,16 +1,20 @@
-using System;
 using System.Collections.Generic;
-using _Source.LevelSystem;
+using _Source.NPCSystem;
+using LevelSystem;
+using NPCSystem.HumanStateMachine;
 using UnityEngine;
+using Utils;
+using Utils.Event;
 using Random = System.Random;
 
-namespace _Source.NPCSystem
+namespace NPCSystem
 {
     public class Human : MonoBehaviour
     {
         [SerializeField] private MovementPoints[] mainPoint;
 
         private Movement _movement;
+        private StateMachine _stateMachine;
         private Random _random;
         private MovementPoints _startPosition;
         private MovementPoints _target;
@@ -28,6 +32,7 @@ namespace _Source.NPCSystem
 
             if (transform.position == _target.transform.position)
             {
+                Signals.Get<HumanCameIntoPlaceSignal>().Dispatch(this);
                 ChooseNewPoints();
             }
         }
@@ -35,6 +40,7 @@ namespace _Source.NPCSystem
         private void Init()
         {
             _movement = new Movement();
+            _stateMachine = new StateMachine(gameObject);
             _random = new Random();
 
             _startPosition = mainPoint[_random.Next(0, mainPoint.Length)];
@@ -59,6 +65,16 @@ namespace _Source.NPCSystem
             }
 
             return point;
+        }
+
+        public void ChangeState()
+        {
+            _stateMachine.Request();
+        }
+
+        public HumanState GetState()
+        {
+            return _stateMachine.State();
         }
     }
 }
