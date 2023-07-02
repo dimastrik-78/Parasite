@@ -1,4 +1,4 @@
 ﻿namespace Utils.Event
 {
-    public class ParasiteMovedSignal : ASignal { }
+    public class LoseGameSignal : ASignal { }
 }

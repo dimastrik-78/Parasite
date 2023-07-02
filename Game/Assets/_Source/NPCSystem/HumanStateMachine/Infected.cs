@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using Utils;
+using Utils.Event;
 
 namespace NPCSystem.HumanStateMachine
 {
@@ -16,8 +18,9 @@ namespace NPCSystem.HumanStateMachine
             return HumanState.Infected;
         }
 
-        public override void Request()
+        public override void Exit()
         {
+            Signals.Get<HumanDieSignal>().Dispatch();
             _human.SetActive(false);
         }
     }

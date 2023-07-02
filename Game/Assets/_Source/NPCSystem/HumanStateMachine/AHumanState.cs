@@ -10,8 +10,8 @@
 
         public virtual HumanState State() => default;
 
-        public virtual void Check() { }
+        public virtual void Enter() { }
         
-        public virtual void Request() { }
+        public virtual void Exit() { }
     }
 }

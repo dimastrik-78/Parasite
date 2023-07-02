@@ -11,12 +11,12 @@ namespace NPCSystem.HumanStateMachine
         
         private int _stateID;
 
-        public StateMachine(GameObject human)
+        public StateMachine(Human human, GameObject humanObject)
         {
             _states = new Dictionary<HumanState, AHumanState>
             {
-                { HumanState.Normal, new Normal(this, human) },
-                { HumanState.Infected, new Infected(this, human) }
+                { HumanState.Normal, new Normal(this, human, humanObject) },
+                { HumanState.Infected, new Infected(this, humanObject) }
             };
             
             ChangeState(HumanState.Normal);
@@ -29,7 +29,7 @@ namespace NPCSystem.HumanStateMachine
 
         public void Request()
         {
-            _currentPlayerState.Request();
+            _currentPlayerState.Exit();
         }
         
         public void ChangeState(HumanState state)

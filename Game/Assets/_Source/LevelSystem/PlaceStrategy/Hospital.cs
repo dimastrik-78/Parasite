@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Utils;
+using Utils.Event;
 
 namespace LevelSystem.PlaceStrategy
 {
@@ -6,7 +7,7 @@ namespace LevelSystem.PlaceStrategy
     {
         public void Action()
         {
-            Debug.Log("Lose");
+            Signals.Get<LoseGameSignal>().Dispatch();
         }
     }
 }

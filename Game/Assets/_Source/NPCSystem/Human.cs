@@ -11,6 +11,8 @@ namespace NPCSystem
     public class Human : MonoBehaviour
     {
         [SerializeField] private MovementPoints[] mainPoint;
+        
+        private readonly List<Place> _places = new();
 
         private Movement _movement;
         private StateMachine _stateMachine;
@@ -19,6 +21,7 @@ namespace NPCSystem
         private MovementPoints _target;
         private List<Transform> _targetPosition = new();
         private int _pointPassed;
+        private int _randomNumber;
         
         void Awake()
         {
@@ -33,18 +36,32 @@ namespace NPCSystem
             {
                 Signals.Get<HumanCameIntoPlaceSignal>().Dispatch(this);
                 ChooseNewPoints();
+                WhereGoing();
             }
         }
 
         private void Init()
         {
             _movement = new Movement();
-            _stateMachine = new StateMachine(gameObject);
+            _stateMachine = new StateMachine(this, gameObject);
             _random = new Random();
 
-            _startPosition = mainPoint[_random.Next(0, mainPoint.Length)];
+            _randomNumber = _random.Next(0, mainPoint.Length);
+            
+            _startPosition = mainPoint[_randomNumber];
             transform.position = _startPosition.transform.position;
+
+            SetListPlace();
             ChooseNewPoints();
+            WhereGoing();
+        }
+
+        private void SetListPlace()
+        {
+            for (int i = 0; i < mainPoint.Length; i++)
+            {
+                _places.Add(mainPoint[i].GetComponent<Place>());
+            }
         }
 
         private void ChooseNewPoints()
@@ -57,16 +74,18 @@ namespace NPCSystem
 
         private MovementPoints ChoseNewTarget(MovementPoints position)
         {
-            var point = mainPoint[_random.Next(0, mainPoint.Length)];
+            _randomNumber = _random.Next(0, mainPoint.Length);
+            var point = mainPoint[_randomNumber];
             while (point == position)
             {
-                point = mainPoint[_random.Next(0, mainPoint.Length)];
+                _randomNumber = _random.Next(0, mainPoint.Length);
+                point = mainPoint[_randomNumber];
             }
 
             return point;
         }
 
-        public void ChangeState()
+        public void Infection()
         {
             _stateMachine.Request();
         }
@@ -74,6 +93,14 @@ namespace NPCSystem
         public HumanState GetState()
         {
             return _stateMachine.State();
+        }
+        
+        public void WhereGoing()
+        {
+            if (_stateMachine.State() == HumanState.Infected)
+            {
+                Debug.Log(_places[_randomNumber].Places);
+            }
         }
     }
 }

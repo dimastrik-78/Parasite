@@ -1,4 +1,5 @@
 ﻿using NPCSystem;
+using UnityEngine;
 
 namespace Utils.Event
 {

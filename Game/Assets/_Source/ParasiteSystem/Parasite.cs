@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using NPCSystem;
 using UnityEngine;
@@ -6,23 +7,43 @@ namespace ParasiteSystem
 {
     public class Parasite : MonoBehaviour
     {
+        [SerializeField] private Transform projection;
         [SerializeField] private int restoringMovementTime;
         [SerializeField] private LayerMask humanMask;
 
-        private bool _canTransition = true;
+        private bool _canTransition;
+        private int _time;
 
         private const float WAIT = 1f;
+
+        private void Awake()
+        {
+            _time = restoringMovementTime;
+        }
 
         private void Update()
         {
             RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, 3f, Vector2.up, 0, humanMask);
-            
+
             if (hit.Length > 0
-                && Input.GetMouseButtonDown(0)
                 && _canTransition)
             {
-                Transition(hit);
+                projection.position = hit[0].transform.position;
+                
+                if (Input.GetMouseButtonDown(0))
+                {
+                    Transition(hit);
+                }
             }
+            else
+            {
+                projection.localPosition = Vector3.zero;
+            }
+        }
+
+        private void OnEnable()
+        {
+            StartCoroutine(RestoringMovement());
         }
 
         // Change implementation
@@ -32,30 +53,28 @@ namespace ParasiteSystem
             Human human = parent.GetComponent<Human>();
             parent = null;
                 
-            human.ChangeState();
+            human.Infection();
                 
             parent = hit[0].transform;
             transform.parent = parent;
 
-            parent.GetComponent<Human>().ChangeState();
+            parent.GetComponent<Human>().Infection();
             transform.localPosition = Vector3.zero;
             StartCoroutine(RestoringMovement());
         }
 
         private IEnumerator RestoringMovement()
         {
-            Debug.Log("cant");
             _canTransition = false;
             
-            int time = restoringMovementTime;
-            while (time != 0)
+            while (_time != 0)
             {
                 yield return new WaitForSeconds(WAIT);
-                time--;
+                _time--;
             }
 
+            _time = restoringMovementTime;
             _canTransition = true;
-            Debug.Log("can");
         }
     }
 }
