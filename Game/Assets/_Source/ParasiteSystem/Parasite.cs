@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using NPCSystem;
 using UnityEngine;
@@ -9,22 +8,17 @@ namespace ParasiteSystem
     {
         [SerializeField] private Transform projection;
         [SerializeField] private int restoringMovementTime;
+        [SerializeField] private float radius;
         [SerializeField] private LayerMask humanMask;
 
         private bool _canTransition;
-        private int _time;
 
         private const float WAIT = 1f;
 
-        private void Awake()
-        {
-            _time = restoringMovementTime;
-        }
-
         private void Update()
         {
-            RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, 3f, Vector2.up, 0, humanMask);
-
+            RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, radius, Vector2.zero, 0, humanMask);
+            
             if (hit.Length > 0
                 && _canTransition)
             {
@@ -43,7 +37,7 @@ namespace ParasiteSystem
 
         private void OnEnable()
         {
-            StartCoroutine(RestoringMovement());
+            _canTransition = true;
         }
 
         // Change implementation
@@ -66,14 +60,14 @@ namespace ParasiteSystem
         private IEnumerator RestoringMovement()
         {
             _canTransition = false;
-            
-            while (_time != 0)
+
+            int time = restoringMovementTime;
+            while (time != 0)
             {
                 yield return new WaitForSeconds(WAIT);
-                _time--;
+                time--;
             }
 
-            _time = restoringMovementTime;
             _canTransition = true;
         }
     }

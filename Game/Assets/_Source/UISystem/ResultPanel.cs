@@ -20,7 +20,7 @@ namespace UISystem
 
         private void ResetGame()
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            SceneManager.LoadScene(0);
         }
     }
 }

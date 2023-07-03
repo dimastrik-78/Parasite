@@ -6,11 +6,18 @@ namespace NPCSystem
 {
     public class Movement
     {
+        private readonly float _speed;
+        
         private const int MAX = 50;
+
+        public Movement(float speed)
+        {
+            _speed = speed;
+        }
 
         public void Move(Transform npc, List<Transform> path, ref int pointPassed)
         {
-            npc.position = Vector3.MoveTowards(npc.position, path[pointPassed].position, 0.1f);
+            npc.position = Vector3.MoveTowards(npc.position, path[pointPassed].position, _speed * Time.deltaTime);
             
             if (npc.position == path[pointPassed].position)
             {

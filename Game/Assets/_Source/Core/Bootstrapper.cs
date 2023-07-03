@@ -24,6 +24,7 @@ namespace Core
             Instantiate(parasitePrefab, humans[index].transform);
             humans[index].gameObject.layer = 7;
             humans[index].Infection();
+            humans[index].WhereGoing();
         }
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using LevelSystem;
 using NPCSystem.HumanStateMachine;
+using TMPro;
 using UnityEngine;
 using Utils;
 using Utils.Event;
@@ -10,7 +11,9 @@ namespace NPCSystem
 {
     public class Human : MonoBehaviour
     {
+        [SerializeField] private float speed;
         [SerializeField] private MovementPoints[] mainPoint;
+        [SerializeField] private TMP_Text text;
         
         private readonly List<Place> _places = new();
 
@@ -42,7 +45,7 @@ namespace NPCSystem
 
         private void Init()
         {
-            _movement = new Movement();
+            _movement = new Movement(speed);
             _stateMachine = new StateMachine(this, gameObject);
             _random = new Random();
 
@@ -97,10 +100,7 @@ namespace NPCSystem
         
         public void WhereGoing()
         {
-            if (_stateMachine.State() == HumanState.Infected)
-            {
-                Debug.Log(_places[_randomNumber].Places);
-            }
+            text.text = _places[_randomNumber].Places.ToString();
         }
     }
 }
